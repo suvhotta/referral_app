@@ -9,9 +9,12 @@ class ReferralCode(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     code = models.CharField(max_length=154, unique=True)
 
-    def save(self, *args, **kwargs):
+    def generate_code(self):
         username = self.user.username
         random_code = secrets.token_hex(2)
-        self.code = username+random_code
+        return username+random_code
+
+    def save(self, *args, **kwargs):
+        self.code = self.generate_code()
 
         return super(ReferralCode, self).save(*args, **kwargs)
