@@ -18,3 +18,11 @@ class ReferralCode(models.Model):
         self.code = self.generate_code()
 
         return super(ReferralCode, self).save(*args, **kwargs)
+
+
+class Referral(models.Model):
+    """
+    For capturing who referred whom.
+    """
+    referred_by = models.ForeignKey(User, unique=False, on_delete=models.DO_NOTHING, related_query_name='my_referral')
+    referred_to = models.OneToOneField(User, on_delete=models.DO_NOTHING, related_query_name='has_referred')
