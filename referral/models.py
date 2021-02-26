@@ -26,3 +26,11 @@ class Referral(models.Model):
     """
     referred_by = models.ForeignKey(User, unique=False, on_delete=models.DO_NOTHING, related_query_name='my_referral')
     referred_to = models.OneToOneField(User, on_delete=models.DO_NOTHING, related_query_name='has_referred')
+
+
+class Wallet(models.Model):
+    """
+    Wallet to store User's credits.
+    """
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    credits = models.FloatField()
