@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #Created app:
+    #Created/Installed apps:
+    'rest_framework', 
     'referral.apps.ReferralConfig',
 ]
 
