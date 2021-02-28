@@ -1,11 +1,13 @@
 from rest_framework import status
 from rest_framework.response import Response
-from referral.serializers import UserSerializer, UserLoginSerializer
+from referral.serializers import UserSerializer, UserLoginSerializer, WalletSerializer
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http import HttpResponse, JsonResponse
 from rest_framework.authtoken.models import Token
 from rest_framework import views
+from rest_framework.permissions import IsAuthenticated
+from referral.models import Wallet
 
 @csrf_exempt
 def user_create(request):
@@ -25,3 +27,12 @@ class UserLoginView(views.APIView):
         user = serializer.validated_data['user']
         token, _ = Token.objects.get_or_create(user=user)
         return Response({"token":token.key}, status=201)
+
+
+class WalletDetailView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        wallet = Wallet.objects.get(user=request.user)
+        serializer = WalletSerializer(wallet)
+        return JsonResponse(serializer.data, status=200)

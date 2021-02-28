@@ -22,4 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user_create/', referral_views.user_create),
     path('login/', referral_views.UserLoginView.as_view(), name='login'),
+    path('wallet/', referral_views.WalletDetailView.as_view(), name='wallet-details'),
+
 ]
