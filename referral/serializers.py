@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from django.core.exceptions import ObjectDoesNotExist
 from referral.models import Referral, ReferralCode, Wallet
 from referral.services import CreateReferral
+from rest_framework.validators import ValidationError
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -37,3 +39,25 @@ class UserSerializer(serializers.ModelSerializer):
                 wallet.credits += 100
                 wallet.save()
         return user
+
+
+
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        username = data.get('username',"")
+        password = data.get('password',"")
+        if username and password:
+            user = authenticate(**data)
+            if user:
+                if user.is_active:
+                    data['user']=user
+                else:
+                    raise ValidationError("Your account has been suspended", code=404)
+            else:
+                raise ValidationError("Please check your credentials and try again!", code=401)
+        else:
+            raise ValidationError("Please enter both username and password to login!", code=401)
+        return data
