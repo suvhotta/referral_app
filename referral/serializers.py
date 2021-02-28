@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ObjectDoesNotExist
 from referral.models import Referral, ReferralCode, Wallet
-from referral.services import CreateReferral
+from referral.services import CreateReferral, SendReferral
 from rest_framework.validators import ValidationError
 
 
@@ -66,3 +66,20 @@ class WalletSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
         fields = ['credits']
+
+
+class ReferralCodeSerializer(serializers.ModelSerializer):
+    to_email = serializers.EmailField(write_only=True)
+
+    class Meta:
+        model = ReferralCode
+        fields = ['code', 'to_email']
+        extra_kwargs = {'code':{'read_only':True}}
+
+    def create(self, validated_data):
+        to_email = validated_data.get('to_email')
+        current_user =  self.context['request'].user
+        code = ReferralCode.objects.get(user=current_user).code
+        sendReferral = SendReferral(mail_id=to_email, referral_code=code)
+        sendReferral.send_referral_mail()
+        return validated_data

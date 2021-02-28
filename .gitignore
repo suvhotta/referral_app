@@ -146,4 +146,6 @@ dmypy.json
 .pytype/
 
 # profiling data
-.prof
+.profsendgrid.env
+sendgrid.env
+sendgrid.env

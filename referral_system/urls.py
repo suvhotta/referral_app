@@ -23,5 +23,5 @@ urlpatterns = [
     path('user_create/', referral_views.user_create),
     path('login/', referral_views.UserLoginView.as_view(), name='login'),
     path('wallet/', referral_views.WalletDetailView.as_view(), name='wallet-details'),
-
+    path('referral/', referral_views.ReferralView.as_view(), name='referral'),
 ]

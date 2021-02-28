@@ -1,13 +1,18 @@
 from rest_framework import status
 from rest_framework.response import Response
-from referral.serializers import UserSerializer, UserLoginSerializer, WalletSerializer
+from referral.serializers import (
+    UserSerializer, 
+    UserLoginSerializer, 
+    WalletSerializer,
+    ReferralCodeSerializer
+)
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http import HttpResponse, JsonResponse
 from rest_framework.authtoken.models import Token
 from rest_framework import views
 from rest_framework.permissions import IsAuthenticated
-from referral.models import Wallet
+from referral.models import Wallet, ReferralCode
 
 @csrf_exempt
 def user_create(request):
@@ -36,3 +41,20 @@ class WalletDetailView(views.APIView):
         wallet = Wallet.objects.get(user=request.user)
         serializer = WalletSerializer(wallet)
         return JsonResponse(serializer.data, status=200)
+
+
+class ReferralView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        code = ReferralCode.objects.get(user=request.user)
+        serializer = ReferralCodeSerializer(code)
+        return JsonResponse(serializer.data, status=200)
+    
+    def post(self, request):
+        data = JSONParser().parse(request)
+        serializer = ReferralCodeSerializer(data=data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({"msg": f"Referral code sent to {serializer.validated_data.get('to_email')}"}, status=202)
+        return JsonResponse(serializer.errors, status=400)
