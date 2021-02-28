@@ -33,4 +33,4 @@ class Wallet(models.Model):
     Wallet to store User's credits.
     """
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
-    credits = models.FloatField()
+    credits = models.FloatField(default=0.0)
