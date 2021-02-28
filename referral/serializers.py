@@ -32,4 +32,8 @@ class UserSerializer(serializers.ModelSerializer):
         if referred_by:
             referral = CreateReferral(referred_by=referred_by, referred_to=user)
             referral.new_referral()
+            for value in (referred_by, user):
+                wallet = Wallet.objects.get(user=value)
+                wallet.credits += 100
+                wallet.save()
         return user
