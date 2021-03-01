@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    ports: 
+      - '5433:5432'
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PWD=${POSTGRES_PWD}
+
+  app:
+    build:
+      context: .
+    volumes: 
+      - static_data:/vol/web
+    environment: 
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+    depends_on: 
+      - db
+
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - static_data:/vol/static
+    ports:
+      - "8080:8080"
+    depends_on: 
+      - app
+
+volumes: 
+  static_data:
