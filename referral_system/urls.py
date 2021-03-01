@@ -16,11 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 import referral.views as referral_views
-from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user_create/', referral_views.user_create),
+    path('register/', referral_views.RegisterView.as_view(), name='register'),
     path('login/', referral_views.UserLoginView.as_view(), name='login'),
     path('wallet/', referral_views.WalletDetailView.as_view(), name='wallet-details'),
     path('referral/', referral_views.ReferralView.as_view(), name='referral'),

@@ -14,9 +14,8 @@ from rest_framework import views
 from rest_framework.permissions import IsAuthenticated
 from referral.models import Wallet, ReferralCode
 
-@csrf_exempt
-def user_create(request):
-    if request.method == "POST":
+class RegisterView(views.APIView):
+    def post(self, request):
         data = JSONParser().parse(request)
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
