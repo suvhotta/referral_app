@@ -1,0 +1,87 @@
+{
+	"info": {
+		"_postman_id": "b3ee91fc-f572-4599-89c9-ffa895e3c448",
+		"name": "referral_api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"def\",\n    \"password\":\"def\",\n    \"referral_code\": \"abc0430\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/register/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"register",
+						""
+					]
+				},
+				"description": "To complete user registration with or without referrals."
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": ""
+				},
+				"description": "For getting the token for user login."
+			},
+			"response": []
+		},
+		{
+			"name": "wallet-details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				},
+				"description": "To get the user's wallet details."
+			},
+			"response": []
+		},
+		{
+			"name": "referral",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				},
+				"description": "To get the referral code."
+			},
+			"response": []
+		},
+		{
+			"name": "referral send",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": ""
+				},
+				"description": "To send the referral code to the mentioned mail id"
+			},
+			"response": []
+		}
+	]
+}
